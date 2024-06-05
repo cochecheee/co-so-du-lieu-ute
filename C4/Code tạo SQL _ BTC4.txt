@@ -1,0 +1,327 @@
+-- Bai 2
+create database Bai2
+go 
+use Bai2
+go
+create table NXB (
+	MaNXB nvarchar(80),
+	TenNXB nvarchar(80),
+	DiaChi nvarchar(80),
+	SoDT nvarchar(10)
+	primary key (MaNXB)
+)
+go
+-- Thêm dữ liệu vào bảng NXB
+INSERT INTO NXB (MaNXB, TenNXB, DiaChi, SoDT) VALUES
+('NXB001', 'Nhà Xuất Bản A', 'Địa chỉ A', '0123456789'),
+('NXB002', 'Nhà Xuất Bản B', 'Địa chỉ B', '0987654321'),
+('NXB003', 'Nhà Xuất Bản C', 'Địa chỉ C', '0383573404'),
+('NXB004', 'Nhà Xuất Bản Hà Nội', 'Địa chỉ Hồ Tây', '0383573204'),
+('NXB005', 'Addison Wesley', 'Địa chỉ NewYork', '0123573204');
+
+go
+create table DauSach (
+	MaSach nvarchar(80),
+	Tua nvarchar(80),
+	MaNXB nvarchar(80)
+	primary key (MaSach)
+	foreign key (MaNXB) references NXB
+)
+go
+INSERT INTO DauSach (MaSach, Tua, MaNXB) VALUES
+('DS001', 'Tủ sách học SQL', 'NXB001'),
+('DS002', 'Lập trình Python', 'NXB002'),
+('DS003', 'Toán cao cấp', 'NXB003'),
+('DS004', 'Cơ sở dữ liệu', 'NXB004'),
+('DS005', 'Sach gi day?', 'NXB005');
+create table TacGia (
+	MaSach nvarchar(80),
+	TenTacGia nvarchar(80)
+	primary key (MaSach,TenTacGia)
+	foreign key (MaSach) references DauSach
+)
+go
+-- Thêm dữ liệu vào bảng TacGia
+INSERT INTO TacGia (MaSach, TenTacGia) VALUES
+('DS001', 'Hemingway'),
+('DS001', 'Trần Thị B'),
+('DS002', 'Lê Văn C');
+
+go
+create table CuonSach (
+	MaSach nvarchar(80),
+	MaCuon nvarchar(80),
+	ViTri int
+	primary key (MaCuon)
+	foreign key (MaSach) references DauSach
+)
+go 
+-- Thêm dữ liệu vào bảng CuonSach
+INSERT INTO CuonSach (MaSach, MaCuon, ViTri) VALUES
+('DS001', 'CS001', 1),
+('DS001', 'CS002', 2),
+('DS002', 'CS003', 3),
+('DS005', 'CS005', 5);
+
+go
+create table DocGia (
+	MaDG nvarchar(80),
+	TenDG nvarchar(80),
+	DiaChi nvarchar(80),
+	SoDT nvarchar(10)
+	primary key (MaDG)
+)
+go 
+INSERT INTO DocGia (MaDG, TenDG, DiaChi, SoDT) VALUES
+('DG001', 'Nguyen Van A', 'Địa chỉ X', '0123456789'),
+('DG002', 'Trần Thị Y', 'Địa chỉ Y', '0987654321'),
+('DG003', 'Lê Văn Z', 'Địa chỉ Z', '0123456789');
+go
+create table Muon(
+	MaCuon nvarchar(80),
+	MaDG nvarchar(80),
+	NgayMuon date,
+	NgayTra date
+	primary key (MaCuon,MaDG)
+	foreign key (MaCuon) references CuonSach,
+	foreign key (MaDG) references DocGia
+)
+go
+-- Thêm dữ liệu vào bảng Muon
+INSERT INTO Muon (MaCuon, MaDG, NgayMuon, NgayTra) VALUES
+('CS001', 'DG001', '2024-03-21', '2024-03-28'),
+('CS002', 'DG002', '2024-03-22', '2024-03-29'),
+('CS003', 'DG003', '2024-03-23', NULL);
+
+
+
+-- Bai 3
+create database Bai3
+go 
+use Bai3
+go
+create table COQUAN (
+	mscoquan nvarchar(50),
+	tencoquan nvarchar(50),
+	diachi nvarchar(50)
+	primary key (mscoquan)
+)
+go
+insert into COQUAN(mscoquan,tencoquan,diachi) values
+('50','Cuc CS Q1','Q1, TPHCM'),
+('01','Cuc CS Q2','Q2, TPHCM'),
+('40','Cuc CS Q3','Q3, TPHCM'),
+('13','Cuc CS DS','Do Son'),
+('15','Cuc CS Q6','Q6, TPHCM'),
+('20','Cuc CS Q7','Q7, TPHCM'),
+('25','Cuc CS Q8','Q8, TPHCM'),
+('07','Cuc CS Q5','Q5, TPHCM');
+go
+create table NV (
+	msnv nvarchar(20),
+	ten nvarchar(50),
+	mscoquan nvarchar(50),
+	congviec nvarchar(50),
+	luong float
+	primary key (msnv)
+	foreign key (mscoquan) references COQUAN
+)
+go
+insert into NV(msnv,ten,mscoquan,congviec,luong) values
+('2211','Nguyen Van A','50','Cong nhan','1000'),
+('2212','Nguyen Van B','01','Cong nhan','1000'),
+('2213','Nguyen Van C','40','Cong nhan','1000'),
+('2214','Nguyen Van D','13','Cong nhan','1000'),
+('2215','Nguyen Van E','15','Cong nhan','1000'),
+('2216','Nguyen Van Tien','50','Cong nhan','1000'),
+('2217','Nguyen Van F','20','Cong nhan','1000'),
+('2218','Nguyen Van G','25','Cong nhan','1000'),
+('2219','Nguyen Van R','07','Cong nhan','1000');
+
+-- Bai 4
+create database Bai4
+go
+use Bai4
+go
+create table THO (
+	matho nvarchar(20),
+	tentho nvarchar(20),
+	nhom int,
+	nhomtruong nvarchar(20)
+	primary key(matho)
+	FOREIGN KEY (nhomtruong) REFERENCES THO(matho)
+)
+go
+insert into THO(matho,tentho,nhom,nhomtruong) values
+('mt1','Van A',1,'mt10'),
+('mt10','Boss Ne',1,null),
+('mt2','Meo Meo',2,'mt3'),
+('mt3','Gau Gau',2,null),
+('mt4','Ni Na',2,'mt3'),
+('mt5','Na Ni',3,null),
+('mt6','Dai Ca',3,'mt5'),
+('mt7','Anh Long',3,'mt5');
+go
+create table CONGVIEC (
+	macv nvarchar(20),
+	noidungcv nvarchar(20)
+	primary key(macv)
+)
+go
+insert into CONGVIEC(macv,noidungcv) values
+('cv01','Dap nha'),
+('cv02','Xay nha'),
+('cv03','Tron vua'),
+('cv04','Cho hang'),
+('cv05','Hai rau'),
+('cv06','Nau com'),
+('cv07','Be gach'),
+('cv08','Son tuong');
+go
+create table KHACHHANG (
+	makh nvarchar(20),
+	tenkh nvarchar(20),
+	diachi nvarchar(20),
+	dienthoai nvarchar(20)
+	primary key(makh)
+)
+go
+insert into KHACHHANG(makh,tenkh,diachi,dienthoai) values
+('kh01','Tao Thao','Trung Quoc','010000123'),
+('kh02','Vo Dien','Q1,HCM','0439573858'),
+('kh03','Sakura','Tokyo','0384638184'),
+('kh04','Naruto','Hokkaido','0937473547'),
+('kh05','Xuan Cao','Yamagata','0374683856'),
+('kh06','Tien Bui','Bien Hoa','0383573404');
+go
+create table HOPDONG (
+	sohd int,
+	ngayhd date,
+	makh nvarchar(20),
+	soxe nvarchar(20),
+	trigiahd float,
+	ngaygiaodk date,
+	ngayngthu date,
+	primary key(sohd),
+	foreign key(makh) references KHACHHANG
+)
+go
+insert into HOPDONG(sohd,ngayhd,makh,soxe,trigiahd,ngaygiaodk,ngayngthu) values
+(1,'2023-07-23','kh06','50H-RF',10000,'2023-07-30','2023-12-30'),
+(2,'2023-01-23','kh01','60H-YK',5000,'2023-01-30','2023-06-30'),
+(3,'2023-02-23','kh02','83H-FG',20000,'2023-02-28','2023-07-30'),
+(4,'2023-03-23','kh06','21H-EF',4792,'2023-03-30','2023-08-30'),
+(5,'2023-04-23','kh05','57H-CV',3000,'2023-04-30','2023-09-30'),
+(6,'2023-05-23','kh01','60H-RT',30000,'2023-05-30','2023-10-30');
+go
+create table CHITIET_HD (
+	sohd int,
+	macv nvarchar(20),
+	trigiacv float,
+	matho nvarchar(20),
+	khoantho float,
+	primary key(sohd,macv),
+	foreign key(matho) references THO,
+	foreign key(macv) references CONGVIEC
+)
+go
+insert into CHITIET_HD(sohd,macv,trigiacv,matho,khoantho) values
+(1,'cv01',1000,'mt1',500),
+(2,'cv01',1000,'mt2',500),
+(2,'cv02',1000,'mt3',500),
+(3,'cv01',1000,'mt4',500),
+(3,'cv02',1000,'mt5',500),
+(3,'cv03',1000,'mt6',500);
+
+go 
+create table PHIEUTHU (
+	sopt int,
+	ngaylappt date,
+	sohd int,
+	makh nvarchar(20),
+	hoten nvarchar(20),
+	sotienthu float,
+	primary key(sopt),
+	foreign key(makh) references KHACHHANG,
+	foreign key(sohd) references HOPDONG(sohd)
+)
+go 
+insert into PHIEUTHU (sopt, ngaylappt, sohd, makh, hoten, sotienthu) values
+(1, '2023-12-30', 1, 'kh06', 'Tao Thao', 10000),
+(2, '2023-06-29', 2, 'kh01', 'Vo Dien', 4000),
+(3, '2023-10-30', 6, 'kh01', 'Vo Dien', 10000);
+
+-- Bai 5
+create database Bai5
+go
+use Bai5
+go 
+create table MHOC (
+	mamh nvarchar(20),
+	tenmh nvarchar(20),
+	sotiet int
+	primary key (mamh)
+)
+go
+insert into MHOC(mamh,tenmh,sotiet) values
+('mh01','LT OOP',50),
+('mh02','KTLT',40),
+('mh03','Database',45),
+('mh04','DSTT',60),
+('mh05','KTMT',45),
+('mh06','Toan 2',50),
+('mh07','Van hoc',45);
+go
+create table GV (
+	magv nvarchar(20),
+	tengv nvarchar(20),
+	mamh nvarchar(20)
+	primary key (magv)
+	foreign key (mamh) references MHOC
+)
+go
+insert into GV(magv,tengv,mamh) values
+('gv01','Nguyen Thanh Son','mh03'),
+('gv02','Ta Qua','mh02'),
+('gv03','Banh Son','mh01'),
+('gv04','Duong Qua','mh05'),
+('gv05','Tru Bat Gio','mh06'),
+('gv06','Ngo Nghinh','mh04'),
+('gv08','Tao Thao','mh07'),
+('gv07','Phung Thanh Do',null);
+go
+create table BUOITHI (
+	hky nvarchar(5),
+	ngay date,
+	gio time,
+	phg nvarchar(20),
+	mamh nvarchar(20),
+	tgthi time unique,
+	primary key (mamh,tgthi)
+)
+go
+INSERT INTO BUOITHI (hky, ngay, gio, phg, mamh, tgthi) VALUES
+('hk1', '2023-02-12', '13:45:00', 'p01', 'mh03', '14:00:00'),
+('hk1', '2023-02-13', '13:45:00', 'p01', 'mh01', '15:00:00'),
+('hk1', '2023-02-14', '13:45:00', 'p02', 'mh02', '14:30:00'),
+('hk1', '2023-02-15', '12:45:00', 'p05', 'mh04', '13:15:00'),
+('hk1', '2023-02-16', '13:45:00', 'p08', 'mh05', '15:30:00'),
+('hk1', '2023-02-17', '13:45:00', 'p11', 'mh06', '08:00:00'),
+('hk1', '2023-02-18', '13:45:00', 'p23', 'mh07', '17:00:00');
+go 
+create table PC_COI_THI (
+	magv nvarchar(20),
+	hk nvarchar(5),
+	ngay date,
+	gio time,
+	phg nvarchar(20)
+)
+go 
+INSERT INTO PC_COI_THI (magv, hk, ngay, gio, phg) VALUES
+('gv01', 'hk1', '2023-02-12', '13:45:00', 'p01'),
+('gv07', 'hk1', '2023-02-13', '13:45:00', 'p01'),
+('gv06', 'hk1', '2023-02-14', '13:45:00', 'p02'),
+('gv05', 'hk1', '2023-02-15', '12:45:00', 'p05'),
+('gv04', 'hk1', '2023-02-16', '13:45:00', 'p08'),
+('gv01', 'hk1', '2023-02-17', '13:45:00', 'p11'),
+('gv02', 'hk1', '2023-02-18', '13:45:00', 'p23');
